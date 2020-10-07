@@ -1,0 +1,135 @@
+
+
+Functionality:
+This code allows a user to type a word or phrase into a text box and then they can either press enter or click the search button in order to pull up all items that contain that word or phrase.
+
+Extra Functionality:
+The code also has a Chicken animation. This chicken animation code is entirely contained withing the Chicken.js file and <Chicken /> tag.
+
+Data: 
+
+The data for this web app is separated into 2 parts. 1) The json data sent to the web application and 2) The API used by the web app to read the data from the json called DisplayData. The json data will be read and converted to the API format and the API format is exclusively the format that will be used by this part of the web app. 
+
+	Json Data format:
+
+	***The Json data may or may not contain a title, img, description, and categories. If categories are included, they could be variable
+
+	{
+    "items": [
+        {
+            "id": 1,
+            "categories": [
+                {
+                    "id": 1,
+                    "name": "Fruit",
+                    "subcategory": {
+                        "id": 1,
+                        "name": "Apple"
+                    }
+                }
+            ],
+            "title": "Red Delicious",
+            "img": "http://www.bluestarclinic.com/wp-content/uploads/2013/12/apple-img.jpg",
+            "description": "Yummy delicious apples that are red."
+        },
+        {
+            "id": 2,
+            "categories": [
+                {
+                    "id": 2,
+                    "name": "Fruit"
+                },
+                {
+                    "id": 3,
+                    "name": "Vegetable"
+                }
+            ],
+            "title": "Potato",
+            "img": "https://paleofoundation.com/wp-content/uploads/2018/04/Are-Potatoes-Paleo-Are-Potatoes-allowed-on-the-Paleo-Diet.png",
+            "description": "What even is a potato?"
+        }
+
+	}
+
+
+	Display Data format:
+	*** This data is restricted to data that will be used for display
+
+	{
+		title: "Potato",
+		description: "What even is a potato?",
+		img: "https://paleofoundation.com/wp-content/uploads/2018/04/Are-Potatoes-Paleo-Are-Potatoes-allowed-on-the-Paleo-Diet.png",
+		categories: [{name: "Fruit"}, {name: "vegetable"}],
+		subcategories: ["Apple"]
+	}
+
+
+	Why have a Display Data format AND a JSON data format?
+
+	Having 2 formats allows the API to cleanly display only relevant data for those trying to make additions to the webapp. ID is not relevant to this portion of the webapp, so it is not exposed to this part of the web app. 
+
+	Another benefit is that one could envision a situation in which the structure or naming conventions of the JSON is modified (especially in a startup environment). Creating a separate API from the JSON allows us to change this structure or naming convention in the API class once instead of forcing search and find within the code base.
+
+
+
+
+App.js:
+
+The App.js class consists of the background image for the site, the Chicken animation and the <ItemViewer />. This ItemViewer contains the logic for the web app functionality.
+
+ItemViewer.js:
+
+The ItemViewer is a compound component. It contains 2 major pieces. It's 2 main components are the 1) ItemInput 2) ItemDisplay.
+The ItemViewer uses a separate class to perform all word searches and never deals directly with data manipulation and calculation. This class is called the ItemSearchAPI.
+
+
+	1) ItemInput: 
+
+	The ItemInput contains the InputTag and the Button to submit the input. On enter or click, the ItemInput alerts the ItemViewer or the new word being searched and the ItemViewer will trigger the word search.
+
+	2) The ItemDisplay consists of the display divs for the elements that meet the search criteria. The ItemDisplay receives this data from its Producer -> the ItemViewer.
+
+	3) ItemSearchAPI -> this class loads all of the data in json format, converts it to display data, and exposes methods to search and find data objects that contain a given word.
+
+
+
+Chicken.js:
+
+Chicken is just a fun addition to the project. Using multiple variations of the same chicken image along with some randomness incorporated in the logic, the chicken can perform random movements and update its own state with a new image and this will trigger the image to be rerendered.
+
+
+
+Testing:
+
+I attempted to write some unit tests with enzyme. Struggled to get them to work with functional components but those tests can be found in ItemViewer.test.js
+
+
+Going further:
+
+Currently this webapp is not responsive. The background is an image and should be resized when the user changes the size of their screen. A separate version would need to be made in order to support iPhone use because the background is just too big. Also, there will need to be a method of navigating a list that is larger than 3. Also, the Json read will need to be made asynchronous because it will likely be an API call.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
